@@ -1,4 +1,4 @@
-# quarkus-getting-started
+# quarkus-checkout-kafka
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
