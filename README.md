@@ -1,4 +1,4 @@
-# quarkus-checkout-kafka
+# Testing Quarkus Checkout Kafka
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 
@@ -18,6 +18,14 @@ Notes:
 - Dev mode enables Live Coding (hot-reload). Edit and save files under `src/main/java` or `src/main/resources` and Quarkus will reload automatically.
 - The app listens on http://localhost:8080 and the Dev UI is available at http://localhost:8080/q/dev/ when dev mode runs.
 - If you prefer the Maven Wrapper (`./mvnw`) we can repair the wrapper files; otherwise using the system `mvn` is the simplest option.
+
+### ADDITION NOTE
+
+Run mock Payment Procces before you need testing mvn quarkus:dev:
+
+```bash
+java -cp target/classes org.ejfa.mock.MockPaymentServer > /tmp/mock_payment_java.log 2>&1 & echo $!
+```
 
 ## Packaging and running the application
 
@@ -89,5 +97,4 @@ The example REST endpoint is implemented in `src/main/java/org/ejfa/GreetingReso
 If you want, I can also:
 - Repair the Maven wrapper so `./mvnw` works, or
 - Add a small `Makefile` or `scripts/` folder with shortcuts to run dev/test/package with the correct `JAVA_HOME`.
-
 
