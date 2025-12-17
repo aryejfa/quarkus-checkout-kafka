@@ -8,7 +8,7 @@
 📌 Please checkout branch feature/mysql-checkout
 
 ```bash
-git checkout origin feature/mysql-checkout
+git checkout feature/mysql-checkout
 ```
 
 1️⃣ Start Event – Checkout Request
