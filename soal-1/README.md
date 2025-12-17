@@ -10,6 +10,12 @@ Layanan yang menerima data dari Kafka topic, melakukan manipulasi data, dan menu
 *   **Database**: MySQL 8.0 (Localhost / Docker)
 *   **Build Tool**: Maven
 
+## Link Video Present Application
+
+```bash
+https://jam.dev/c/d185c94e-f27b-4dd9-b070-8111027d63e5
+```
+
 ## Dataset
 
 Dataset yang digunakan adalah **Data Transaksi E-commerce (Synthetic)**.
