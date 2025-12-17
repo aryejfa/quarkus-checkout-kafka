@@ -5,7 +5,4 @@ public class CheckoutRequest {
     public Long userId;
     public Integer quantity;
     public Double pricePerUnit;
-
-    public CheckoutRequest() {
-    }
 }

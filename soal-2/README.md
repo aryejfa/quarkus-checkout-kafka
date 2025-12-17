@@ -5,6 +5,11 @@
 ## 🚀 BPMN Checkout Process
 ![Image](../images/checkout-bpmn.png)
 
+📌 Please checkout branch feature/mysql-checkout
+
+```bash
+git checkout origin feature/mysql-checkout
+```
 
 1️⃣ Start Event – Checkout Request
 
