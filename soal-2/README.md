@@ -1,5 +1,11 @@
 # SOAL 2
 
+
+
+## 🚀 BPMN Checkout Process
+![Image](../images/checkout-bpmn.png)
+
+
 1️⃣ Start Event – Checkout Request
 
 Trigger: POST /checkout
