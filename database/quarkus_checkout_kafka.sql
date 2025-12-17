@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 16, 2025 at 04:08 PM
+-- Generation Time: Dec 17, 2025 at 08:26 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 7.4.33
 
@@ -28,22 +28,22 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `orders` (
-  `id` bigint(20) NOT NULL,
-  `createdAt` datetime(6) DEFAULT NULL,
-  `productId` bigint(20) DEFAULT NULL,
   `quantity` int(11) DEFAULT NULL,
-  `status` varchar(255) DEFAULT NULL,
   `totalPrice` double DEFAULT NULL,
-  `userId` bigint(20) DEFAULT NULL
+  `createdAt` datetime(6) DEFAULT NULL,
+  `id` bigint(20) NOT NULL,
+  `productId` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `userId` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`id`, `createdAt`, `productId`, `quantity`, `status`, `totalPrice`, `userId`) VALUES
-(151, '2025-12-16 22:05:41.000000', 123, 2, 'COMPLETED', 19.98, 1),
-(152, '2025-12-16 22:05:57.000000', 123, 2, 'COMPLETED', 19.98, 1);
+INSERT INTO `orders` (`quantity`, `totalPrice`, `createdAt`, `id`, `productId`, `status`, `userId`) VALUES
+(2, 19.98, '2025-12-17 14:25:23.000000', 3, '123', 'COMPLETED', '1'),
+(2, 19.98, '2025-12-17 14:25:27.000000', 4, '123', 'COMPLETED', '1');
 
 -- --------------------------------------------------------
 
@@ -60,7 +60,7 @@ CREATE TABLE `orders_SEQ` (
 --
 
 INSERT INTO `orders_SEQ` (`next_val`) VALUES
-(201);
+(51);
 
 -- --------------------------------------------------------
 
@@ -69,11 +69,10 @@ INSERT INTO `orders_SEQ` (`next_val`) VALUES
 --
 
 CREATE TABLE `payments` (
-  `id` bigint(20) NOT NULL,
   `amount` double DEFAULT NULL,
   `createdAt` datetime(6) DEFAULT NULL,
+  `id` bigint(20) NOT NULL,
   `orderId` bigint(20) DEFAULT NULL,
-  `providerResponse` varchar(255) DEFAULT NULL,
   `status` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -81,9 +80,9 @@ CREATE TABLE `payments` (
 -- Dumping data for table `payments`
 --
 
-INSERT INTO `payments` (`id`, `amount`, `createdAt`, `orderId`, `providerResponse`, `status`) VALUES
-(51, 19.98, '2025-12-16 22:05:41.000000', 151, '{\"status\":\"SUCCESS\",\"transactionId\":\"tx-1765897541889\"}', 'COMPLETED'),
-(52, 19.98, '2025-12-16 22:05:57.000000', 152, '{\"status\":\"SUCCESS\",\"transactionId\":\"tx-1765897557744\"}', 'COMPLETED');
+INSERT INTO `payments` (`amount`, `createdAt`, `id`, `orderId`, `status`) VALUES
+(19.98, '2025-12-17 14:25:23.000000', 3, 3, 'SUCCESS'),
+(19.98, '2025-12-17 14:25:27.000000', 4, 4, 'SUCCESS');
 
 -- --------------------------------------------------------
 
@@ -100,7 +99,7 @@ CREATE TABLE `payments_SEQ` (
 --
 
 INSERT INTO `payments_SEQ` (`next_val`) VALUES
-(101);
+(1);
 
 --
 -- Indexes for dumped tables
@@ -117,6 +116,22 @@ ALTER TABLE `orders`
 --
 ALTER TABLE `payments`
   ADD PRIMARY KEY (`id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
