@@ -16,13 +16,21 @@ public class PaymentConsumer {
     @Inject
     com.fasterxml.jackson.databind.ObjectMapper mapper;
 
+    @Inject
+    org.ejfa.service.PaymentService paymentService;
+
     @Incoming("order_created")
     public void process(String json) {
         try {
             OrderCreatedEvent event = mapper.readValue(json, OrderCreatedEvent.class);
-            PaymentResultEvent result = new PaymentResultEvent(event.orderId, "SUCCESS");
+            System.out.println("PaymentConsumer received Order: " + event.orderId);
 
-            // ✅ PRODUCE VIA EMITTER SAJA
+            // 1. Simpan ke MySQL via Service
+            org.ejfa.domain.Payment payment = paymentService.processPayment(event);
+            System.out.println("Payment persisted to MySQL with ID: " + payment.id);
+
+            // 2. Kirim Result Event
+            PaymentResultEvent result = new PaymentResultEvent(event.orderId, payment.status);
             paymentResultProducer.send(result);
         } catch (Exception e) {
             e.printStackTrace();

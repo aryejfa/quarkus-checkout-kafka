@@ -20,6 +20,7 @@ public class OrderService {
         order.userId = String.valueOf(req.userId);
         order.productId = String.valueOf(req.productId);
         order.quantity = req.quantity;
+        order.createdAt = java.time.LocalDateTime.now();
 
         // Hitung total price
         if (req.pricePerUnit != null && req.quantity != null) {
@@ -34,5 +35,14 @@ public class OrderService {
         entityManager.persist(order);
 
         return order;
+    }
+
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public void updateStatus(Long orderId, String status) {
+        Order order = entityManager.find(Order.class, orderId);
+        if (order != null) {
+            order.status = status;
+            entityManager.persist(order);
+        }
     }
 }
