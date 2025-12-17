@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL"
+  xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI"
+  xmlns:dc="http://www.omg.org/spec/DD/20100524/DC"
+  xmlns:di="http://www.omg.org/spec/DD/20100524/DI"
+  id="Definitions_1"
+  targetNamespace="http://ejfa.org/checkout">
+
+  <bpmn:process id="CheckoutProcess" name="Checkout Process" isExecutable="false">
+
+    <bpmn:startEvent id="StartEvent_1" name="Checkout Request"/>
+
+    <bpmn:serviceTask id="Task_Validate" name="Validate Request"/>
+
+    <bpmn:exclusiveGateway id="Gateway_Valid" name="Request Valid?"/>
+
+    <bpmn:endEvent id="End_BadRequest" name="400 Bad Request"/>
+
+    <bpmn:serviceTask id="Task_CreateOrder" name="Create Order"/>
+    <bpmn:serviceTask id="Task_PersistOrder" name="Persist Order"/>
+
+    <bpmn:serviceTask id="Task_CallPayment" name="Call Payment Service"/>
+
+    <bpmn:exclusiveGateway id="Gateway_Payment" name="Payment Success?"/>
+
+    <bpmn:serviceTask id="Task_FinalizeSuccess" name="Finalize Success"/>
+    <bpmn:serviceTask id="Task_FinalizeFailure" name="Finalize Failure"/>
+
+    <bpmn:endEvent id="End_Success" name="201 Created"/>
+    <bpmn:endEvent id="End_Failure" name="202 Accepted"/>
+
+    <!-- Sequence Flows -->
+    <bpmn:sequenceFlow id="Flow_1" sourceRef="StartEvent_1" targetRef="Task_Validate"/>
+    <bpmn:sequenceFlow id="Flow_2" sourceRef="Task_Validate" targetRef="Gateway_Valid"/>
+
+    <bpmn:sequenceFlow id="Flow_3" sourceRef="Gateway_Valid" targetRef="End_BadRequest"/>
+
+    <bpmn:sequenceFlow id="Flow_4" sourceRef="Gateway_Valid" targetRef="Task_CreateOrder"/>
+
+    <bpmn:sequenceFlow id="Flow_5" sourceRef="Task_CreateOrder" targetRef="Task_PersistOrder"/>
+    <bpmn:sequenceFlow id="Flow_6" sourceRef="Task_PersistOrder" targetRef="Task_CallPayment"/>
+
+    <bpmn:sequenceFlow id="Flow_7" sourceRef="Task_CallPayment" targetRef="Gateway_Payment"/>
+
+    <bpmn:sequenceFlow id="Flow_8" sourceRef="Gateway_Payment" targetRef="Task_FinalizeSuccess"/>
+    <bpmn:sequenceFlow id="Flow_9" sourceRef="Gateway_Payment" targetRef="Task_FinalizeFailure"/>
+
+    <bpmn:sequenceFlow id="Flow_10" sourceRef="Task_FinalizeSuccess" targetRef="End_Success"/>
+    <bpmn:sequenceFlow id="Flow_11" sourceRef="Task_FinalizeFailure" targetRef="End_Failure"/>
+
+  </bpmn:process>
+
+  <!-- ================= BPMN DI ================= -->
+
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CheckoutProcess">
+
+      <!-- Shapes -->
+      <bpmndi:BPMNShape id="StartEvent_1_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="100" y="100" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_Validate_di" bpmnElement="Task_Validate">
+        <dc:Bounds x="180" y="80" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_Valid_di" bpmnElement="Gateway_Valid" isMarkerVisible="true">
+        <dc:Bounds x="340" y="95" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="End_BadRequest_di" bpmnElement="End_BadRequest">
+        <dc:Bounds x="340" y="200" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_CreateOrder_di" bpmnElement="Task_CreateOrder">
+        <dc:Bounds x="440" y="80" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_PersistOrder_di" bpmnElement="Task_PersistOrder">
+        <dc:Bounds x="600" y="80" width="120" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_CallPayment_di" bpmnElement="Task_CallPayment">
+        <dc:Bounds x="760" y="80" width="150" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Gateway_Payment_di" bpmnElement="Gateway_Payment" isMarkerVisible="true">
+        <dc:Bounds x="950" y="95" width="50" height="50"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_FinalizeSuccess_di" bpmnElement="Task_FinalizeSuccess">
+        <dc:Bounds x="1040" y="40" width="150" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="Task_FinalizeFailure_di" bpmnElement="Task_FinalizeFailure">
+        <dc:Bounds x="1040" y="160" width="150" height="80"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="End_Success_di" bpmnElement="End_Success">
+        <dc:Bounds x="1240" y="60" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <bpmndi:BPMNShape id="End_Failure_di" bpmnElement="End_Failure">
+        <dc:Bounds x="1240" y="180" width="36" height="36"/>
+      </bpmndi:BPMNShape>
+
+      <!-- Edges -->
+      <bpmndi:BPMNEdge id="Flow_1_di" bpmnElement="Flow_1">
+        <di:waypoint x="136" y="118"/>
+        <di:waypoint x="180" y="118"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_2_di" bpmnElement="Flow_2">
+        <di:waypoint x="300" y="118"/>
+        <di:waypoint x="340" y="118"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_3_di" bpmnElement="Flow_3">
+        <di:waypoint x="365" y="145"/>
+        <di:waypoint x="365" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_4_di" bpmnElement="Flow_4">
+        <di:waypoint x="390" y="118"/>
+        <di:waypoint x="440" y="118"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_5_di" bpmnElement="Flow_5">
+        <di:waypoint x="560" y="118"/>
+        <di:waypoint x="600" y="118"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_6_di" bpmnElement="Flow_6">
+        <di:waypoint x="720" y="118"/>
+        <di:waypoint x="760" y="118"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_7_di" bpmnElement="Flow_7">
+        <di:waypoint x="910" y="118"/>
+        <di:waypoint x="950" y="118"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_8_di" bpmnElement="Flow_8">
+        <di:waypoint x="1000" y="118"/>
+        <di:waypoint x="1040" y="80"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_9_di" bpmnElement="Flow_9">
+        <di:waypoint x="1000" y="118"/>
+        <di:waypoint x="1040" y="200"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_10_di" bpmnElement="Flow_10">
+        <di:waypoint x="1190" y="80"/>
+        <di:waypoint x="1240" y="78"/>
+      </bpmndi:BPMNEdge>
+
+      <bpmndi:BPMNEdge id="Flow_11_di" bpmnElement="Flow_11">
+        <di:waypoint x="1190" y="200"/>
+        <di:waypoint x="1240" y="198"/>
+      </bpmndi:BPMNEdge>
+
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+
+</bpmn:definitions>
