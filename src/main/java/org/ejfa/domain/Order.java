@@ -1,22 +1,19 @@
-package org.ejfa.model;
+package org.ejfa.domain;
+
+import java.time.LocalDateTime;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "orders")
 public class Order extends PanacheEntity {
-    public Long productId;
-    public Long userId;
+
+    public String userId;
+    public String productId;
     public Integer quantity;
     public Double totalPrice;
     public String status;
     public LocalDateTime createdAt;
-
-    public Order() {
-        this.createdAt = LocalDateTime.now();
-        this.status = "PENDING";
-    }
 }
