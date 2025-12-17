@@ -13,13 +13,19 @@ public class PaymentConsumer {
     @Inject
     PaymentResultProducer paymentResultProducer;
 
+    @Inject
+    com.fasterxml.jackson.databind.ObjectMapper mapper;
+
     @Incoming("order_created")
-    public void process(OrderCreatedEvent event) {
+    public void process(String json) {
+        try {
+            OrderCreatedEvent event = mapper.readValue(json, OrderCreatedEvent.class);
+            PaymentResultEvent result = new PaymentResultEvent(event.orderId, "SUCCESS");
 
-        PaymentResultEvent result =
-                new PaymentResultEvent(event.orderId, "SUCCESS");
-
-        // ✅ PRODUCE VIA EMITTER SAJA
-        paymentResultProducer.send(result);
+            // ✅ PRODUCE VIA EMITTER SAJA
+            paymentResultProducer.send(result);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

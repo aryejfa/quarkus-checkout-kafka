@@ -8,7 +8,7 @@ public class OrderCreatedEvent {
     public Integer quantity;
     public Double totalPrice;
 
-    public OrderCreatedEvent(Long id, String productId1, Integer quantity1, Double totalPrice1, String userId1) {
+    public OrderCreatedEvent() {
     }
 
     public OrderCreatedEvent(
@@ -16,8 +16,7 @@ public class OrderCreatedEvent {
             String userId,
             String productId,
             Integer quantity,
-            Double totalPrice
-    ) {
+            Double totalPrice) {
         this.orderId = orderId;
         this.userId = userId;
         this.productId = productId;

@@ -8,10 +8,17 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class OrderFinalizer {
 
+    @jakarta.inject.Inject
+    com.fasterxml.jackson.databind.ObjectMapper mapper;
+
     @Incoming("payment_result")
-    public void finalizeOrder(PaymentResultEvent event) {
-        System.out.println(
-            "Order " + event.orderId + " finalized with status " + event.status
-        );
+    public void finalizeOrder(String json) {
+        try {
+            PaymentResultEvent event = mapper.readValue(json, PaymentResultEvent.class);
+            System.out.println(
+                    "Order " + event.orderId + " finalized with status " + event.status);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -4,7 +4,6 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.transaction.Transactional;
 
 import org.ejfa.domain.Order;
 import org.ejfa.event.OrderCreatedEvent;
@@ -18,26 +17,35 @@ public class CheckoutResource {
     @Inject
     OrderProducer orderProducer;
 
+    @Inject
+    org.ejfa.service.OrderService orderService;
+
     @POST
-    @Transactional
-    public Response checkout(Order order) {
+    public Response checkout(org.ejfa.dto.CheckoutRequest request) {
+        System.out.println("Processing checkout request for product: " + request.productId);
 
-        // 1. Simpan ke database
-        order.status = "CREATED";
-        order.persist();
+        // 1. Simpan ke database (Isolated Transaction)
+        Order order = orderService.createOrder(request);
+        System.out.println("Order persisted to DB: " + order.id);
 
-        // 2. CONVERT Entity → Event (INI YANG SEBELUMNYA SALAH)
+        // 2. CONVERT Entity → Event
         OrderCreatedEvent event = new OrderCreatedEvent(
                 order.id,
                 order.userId,
                 order.productId,
                 order.quantity,
-                order.totalPrice
-        );
+                order.totalPrice);
 
         // 3. Publish ke Kafka
         orderProducer.send(event);
+        System.out.println("Event sent to Kafka");
 
         return Response.ok(order).build();
+    }
+
+    @GET
+    @Path("/ping")
+    public String ping() {
+        return "pong";
     }
 }
